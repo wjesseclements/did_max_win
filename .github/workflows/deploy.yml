@@ -3,17 +3,22 @@ name: Deploy to AWS S3
 on:
   push:
     branches:
-      - main  # Triggers the workflow on pushes to the main branch
+      - main  # Set this to the branch you want to deploy from
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # Required for OIDC
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'  # Ensures compatibility with your project's Node.js version
+        node-version: '14'  # Set this to the node version you are using
 
     - name: Install dependencies
       run: npm install
@@ -21,12 +26,12 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+    - name: Configure AWS credentials from Web Identity token
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: 'us-east-1'  # Ensure this is the correct region for your S3 bucket
+        aws-region: us-east-1  # Replace with your AWS region
+        role-to-assume: arn:aws:iam::102322888912:role/github-actions-role
+        role-session-name: GitHubActionsSession
 
     - name: Deploy to S3
       run: aws s3 sync build/ s3://max-win-checker --acl public-read --delete
