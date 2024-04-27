@@ -33,9 +33,9 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1  # Replace with your AWS region
-        role-to-assume: arn:aws:iam::102322888912:role/cicd-test-role
-        #role-session-name: GitHubActionsSession
-        #audience: sts.amazonaws.com
+        role-to-assume: arn:aws:iam::102322888912:role/gha-role
+        role-session-name: GitHubActionsSession
+        audience: sts.amazonaws.com
 
     - name: Deploy to S3
       run: aws s3 sync build/ s3://max-win-checker --acl public-read --delete
