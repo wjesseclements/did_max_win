@@ -30,7 +30,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1  # Replace with your AWS region
-        role-to-assume: arn:aws:iam::102322888912:role/github-actions-role
+        role-to-assume: arn:aws:iam::102322888912:role/cicd-test-role
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
 
