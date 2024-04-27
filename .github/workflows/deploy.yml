@@ -5,14 +5,16 @@ on:
     branches:
       - main  # Set this to the branch you want to deploy from
 
-permissions:
-    contents: read
-    id-token: write  # Required for OIDC
+
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write  # Required for OIDC
+      contents: read
+      
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -32,8 +34,8 @@ jobs:
       with:
         aws-region: us-east-1  # Replace with your AWS region
         role-to-assume: arn:aws:iam::102322888912:role/cicd-test-role
-        role-session-name: GitHubActionsSession
-        audience: sts.amazonaws.com
+        #role-session-name: GitHubActionsSession
+        #audience: sts.amazonaws.com
 
     - name: Deploy to S3
       run: aws s3 sync build/ s3://max-win-checker --acl public-read --delete
