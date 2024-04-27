@@ -33,7 +33,7 @@ function App() {
       const response = await fetch(url);
       const data = await response.json();
       const winner = data.MRData.RaceTable.Races[0].Results[0].Driver.driverId;
-      setResult(winner === 'max_verstappen' ? "Yes, Max won!" : "No, Max didn't win.");
+      setResult(winner === 'max_verstappen' ? "Of course he did" : "Nope! This might be a good race to watch.");
     } catch (error) {
       console.error('Error fetching data:', error);
       setResult('Failed to fetch data. Please try again.');
